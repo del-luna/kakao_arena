@@ -163,7 +163,7 @@ class Melon_generator:
         r = vstack([te_mtx, tr_mtx])
         self.r = csr_matrix(r)
         print("rating matrix shape is :",np.shape(r))
-        print("Time taken for Preprocessing:",round(time.time()-t1),3)
+        print("Time taken for Preprocessing:",round((time.time()-t1),3))
         
     def run(self):
         self.add_seed()

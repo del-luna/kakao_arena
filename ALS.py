@@ -1,3 +1,4 @@
+from tqdm import tqdm
 import numpy as np
 from scipy.sparse import *
 
@@ -14,8 +15,18 @@ def als_run(data, n_items):
     tag_model.user_factors = als_model.user_factors
     item_model.item_factors = als_model.item_factors[:n_items]
     tag_model.item_factors = als_model.item_factors[n_items:]
-    #item_rec_csr = train[:, :n_items]
-    #tag_rec_csr = train[:, n_items:]
+    item_rec_csr = data[:, :n_items]
+    tag_rec_csr = data[:, n_items:]
+    
+    item_list = []
+    tag_list = []
+    for u in tqdm(range(data.shape[0])):
+        item_rec = item_model.recommend(u, item_rec_csr, N=7000)
+        tag_rec = tag_model.recommend(u, tag_rec_csr, N=100)
+        item_list.append(item_rec)
+        tag_list.append(item_rec)
+    
+    return item_list, tag_list
     '''
     item_ret = []
     tag_ret = []
@@ -27,5 +38,6 @@ def als_run(data, n_items):
         tag_rec = [idx_to_tag[x[0]] for x in tag_rec if x[0] in idx_to_tag]
         item_ret.append(item_rec)
         tag_ret.append(tag_rec)
-    '''
+    
     return als_model, item_model, tag_model
+    '''
